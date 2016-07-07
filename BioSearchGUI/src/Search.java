@@ -131,6 +131,8 @@ public class Search {
 	public ArrayList<String> exactSearch(String searchWord,
 			ArrayList<String> doc, boolean thesaurus, boolean sentence) {
 		result = new ArrayList<String>();
+		int pos = 0;
+		String[] line;
 		String[] synonyms = null;
 		setSearchWord(searchWord);
 
@@ -146,12 +148,32 @@ public class Search {
 			result.add("This word is ignored in search results,"
 					+ " please select a different word to search");
 		} else {
-			// search for the word in the document
-			BoyerMooreSearch s = new BoyerMooreSearch(searchWord);
-			while(s.search(doc.toString()) != -1){
-				System.out.println(s.search(doc.toString()));
+			for (int i = 0; i < doc.size() - 1; i++) {
+				try {
+					// Create an array of Strings to hold the words in the line
+					line = doc.get(i).split(" ");
+					// Loop through the line
+					for (int j = 0; j < line.length; j++) {
+						// If the word is larger or equal to the search word,
+						// continue
+						if (line[j].length() >= searchWord.length()) {
+							// If the word is equal to the search word, add it.
+							if (searchWord.equals(line[j].substring(0,
+									searchWord.length()).toLowerCase())) {
+								result.add("" + "\n\n" + "Search Word: "
+										+ line[j] + "\n\n"
+										+ "Paragraph Number in text " + (i + 1)
+										+ " Word Number " + (j + 1) + "\n");
+								pos = doc.get(i).indexOf(line[j]);
+								result.add(doc.get(i).substring(
+										doc.get(i).lastIndexOf(".", pos) + 1,
+										doc.get(i).indexOf(".", pos) + 1));
+							}
+						}
+					}
+				} catch (IndexOutOfBoundsException ioobe) {
+				}
 			}
-			search(doc, searchWord);
 		}
 		if (result.isEmpty()) {
 			result.add("No search results found for this word!");
