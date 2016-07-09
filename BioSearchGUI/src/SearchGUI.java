@@ -25,13 +25,13 @@ import javax.swing.text.Highlighter;
 public class SearchGUI {
 
 	private ArrayList<String> animalDoc, heredityDoc, plantsDoc, cellDoc;
-	private String aText, pText, hText, cText, newSearch;
+	private String aText, pText, hText, cText, searchBarrier;
 	private Highlighter hilight;
 	private JFrame frame;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	private JCheckBox checkBox, checkBox2;
-	private JTextField txtSearchTerms, textField, textField_1;
-	
+	private JCheckBox checkBox;
+	private JTextField exactSearchTerm, partialSearchField, derivitiveSearchField;
+
 	/**
 	 * Launch the application.
 	 */
@@ -58,13 +58,13 @@ public class SearchGUI {
 		this.plantsDoc = plantsDoc;
 		this.cellDoc = cellDoc;
 		// Duplicates the "-" character
-		String rep = new String(new char[50]).replace("\0", "-");
+		String strBarrier = new String(new char[50]).replace("\0", "-");
 
-		aText = rep + "Animal Text" + rep + "\n";
-		hText = rep + "Heredity Text" + rep + "\n";
-		pText = rep + "Plant Text" + rep + "\n";
-		cText = rep + "Cell Text" + rep + "\n";
-		newSearch = rep + rep + rep + "\n";
+		aText = strBarrier + "Animal Text" + strBarrier + "\n";
+		hText = strBarrier + "Heredity Text" + strBarrier + "\n";
+		pText = strBarrier + "Plant Text" + strBarrier + "\n";
+		cText = strBarrier + "Cell Text" + strBarrier + "\n";
+		searchBarrier = strBarrier + strBarrier + strBarrier + "\n";
 
 		hilight = new DefaultHighlighter();
 		initialize();
@@ -103,232 +103,102 @@ public class SearchGUI {
 		frame.getContentPane().add(checkBox);
 
 		// First panel used for "exact terms"
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(211, 211, 211));
-		panel.setBorder(null);
+		JPanel exactPanel = new JPanel();
+		exactPanel.setBackground(new Color(211, 211, 211));
+		exactPanel.setBorder(null);
 
-		tabbedPane.addTab("Exact Terms", null, panel, null);
-		panel.setLayout(null);
+		tabbedPane.addTab("Exact Terms", null, exactPanel, null);
+		exactPanel.setLayout(null);
 
 		// Sets the search field
-		txtSearchTerms = new JTextField();
-		txtSearchTerms.addActionListener(new ActionListener() {
+		exactSearchTerm = new JTextField();
+		// Allows user to push the enter button to search
+		exactSearchTerm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Searches through all of the documents and writes the results
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				animalText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-				textArea.append(aText);
-				write(textArea, animalText, txtSearchTerms.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, txtSearchTerms.getText());
-				textArea.append(pText);
-				write(textArea, plantText, txtSearchTerms.getText());
-				textArea.append(cText);
-				write(textArea, cellText, txtSearchTerms.getText());
-				write(textArea, new ArrayList<String>(),
-						txtSearchTerms.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "exact");
 			}
 		});
-		txtSearchTerms.setText("Search Terms...");
-		txtSearchTerms.setBounds(6, 6, 626, 28);
-		panel.add(txtSearchTerms);
-		txtSearchTerms.setColumns(10);
+		exactSearchTerm.setText("Search Terms...");
+		exactSearchTerm.setBounds(6, 6, 626, 28);
+		exactPanel.add(exactSearchTerm);
+		exactSearchTerm.setColumns(10);
 
 		// Creates the Search button
-		JButton btnSearch_1 = new JButton("Search");
-		// If the search button is pushed, then take this action
-		btnSearch_1.addActionListener(new ActionListener() {
+		JButton exactSearchBtn = new JButton("Search");
+		// If the actual search button is pushed, then take this action
+		exactSearchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Searches through all of the documents and writes the results
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				animalText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-				textArea.append(aText);
-				write(textArea, animalText, txtSearchTerms.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, txtSearchTerms.getText());
-				textArea.append(pText);
-				write(textArea, plantText, txtSearchTerms.getText());
-				textArea.append(cText);
-				write(textArea, cellText, txtSearchTerms.getText());
-				write(textArea, new ArrayList<String>(),
-						txtSearchTerms.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "exact");
 			}
 		});
-		btnSearch_1.setBounds(644, 7, 117, 29);
-		panel.add(btnSearch_1);
+		exactSearchBtn.setBounds(644, 7, 117, 29);
+		exactPanel.add(exactSearchBtn);
 
 		// This panel creates the "partial terms" type of search
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(211, 211, 211));
-		tabbedPane.addTab("Partial Terms", null, panel_1, null);
-		panel_1.setLayout(null);
+		JPanel partialPanel = new JPanel();
+		partialPanel.setBackground(new Color(211, 211, 211));
+		tabbedPane.addTab("Partial Terms", null, partialPanel, null);
+		partialPanel.setLayout(null);
 
 		// Creates the search field
-		textField = new JTextField();
-		textField.addActionListener(new ActionListener() {
+		partialSearchField = new JTextField();
+		partialSearchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Searches through all of the documents and writes the results
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				animalText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-				textArea.append(aText);
-				write(textArea, animalText, textField.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, textField.getText());
-				textArea.append(pText);
-				write(textArea, plantText, textField.getText());
-				textArea.append(cText);
-				write(textArea, cellText, textField.getText());
-				write(textArea, new ArrayList<String>(), textField.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "partial");
 			}
 		});
-		textField.setBounds(6, 6, 626, 28);
-		textField.setText("Search Terms...");
-		textField.setColumns(10);
-		panel_1.add(textField);
+		partialSearchField.setBounds(6, 6, 626, 28);
+		partialSearchField.setText("Search Terms...");
+		partialSearchField.setColumns(10);
+		partialPanel.add(partialSearchField);
 
 		// Creates the search button for partial searching
-		JButton button = new JButton("Search");
+		JButton partialSearchBtn = new JButton("Search");
 		// See the first search button for details
-		button.addActionListener(new ActionListener() {
+		partialSearchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				animalText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-				textArea.append(aText);
-				write(textArea, animalText, textField.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, textField.getText());
-				textArea.append(pText);
-				write(textArea, plantText, textField.getText());
-				textArea.append(cText);
-				write(textArea, cellText, textField.getText());
-				write(textArea, new ArrayList<String>(), textField.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "partial");
 			}
 		});
-		button.setBounds(644, 7, 117, 29);
-		panel_1.add(button);
+		partialSearchBtn.setBounds(644, 7, 117, 29);
+		partialPanel.add(partialSearchBtn);
 
 		// Panel for derivative terms
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(211, 211, 211));
-		tabbedPane.addTab("Derivative Terms", null, panel_2, null);
-		panel_2.setLayout(null);
+		JPanel derivitivePanel = new JPanel();
+		derivitivePanel.setBackground(new Color(211, 211, 211));
+		tabbedPane.addTab("Derivative Terms", null, derivitivePanel, null);
+		derivitivePanel.setLayout(null);
 
 		// Adds the search field for derivative terms
-		textField_1 = new JTextField();
-		textField_1.addActionListener(new ActionListener() {
+		derivitiveSearchField = new JTextField();
+		// Allows user to press enter to search
+		derivitiveSearchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				animalText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-				textArea.append(aText);
-				write(textArea, animalText, textField_1.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, textField_1.getText());
-				textArea.append(pText);
-				write(textArea, plantText, textField_1.getText());
-				textArea.append(cText);
-				write(textArea, cellText, textField_1.getText());
-				write(textArea, new ArrayList<String>(), textField_1.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "derivitive");
 			}
 		});
-		textField_1.setText("Search Terms...");
-		textField_1.setColumns(10);
-		textField_1.setBounds(6, 6, 626, 28);
-		panel_2.add(textField_1);
+		derivitiveSearchField.setText("Search Terms...");
+		derivitiveSearchField.setColumns(10);
+		derivitiveSearchField.setBounds(6, 6, 626, 28);
+		derivitivePanel.add(derivitiveSearchField);
 
-		JButton button_1 = new JButton("Search");
+		JButton derivitiveSearchBtn = new JButton("Search");
 		// See the other search buttons for more details
-		button_1.addActionListener(new ActionListener() {
+		derivitiveSearchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Search word = new Search(newSearch);
-				ArrayList<String> animalText = new ArrayList<String>();
-				ArrayList<String> heredityText = new ArrayList<String>();
-				ArrayList<String> plantText = new ArrayList<String>();
-				ArrayList<String> cellText = new ArrayList<String>();
-				// Search through each document
-				animalText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected());
-				heredityText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected());
-				plantText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected());
-				cellText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected());
-
-				// Write the results on the textArea
-				textArea.append(aText);
-				write(textArea, animalText, textField_1.getText());
-				textArea.append(hText);
-				write(textArea, heredityText, textField_1.getText());
-				textArea.append(pText);
-				write(textArea, plantText, textField_1.getText());
-				textArea.append(cText);
-				write(textArea, cellText, textField_1.getText());
-				write(textArea, new ArrayList<String>(), textField_1.getText());
-				textArea.append(newSearch);
+				Search word = new Search();
+				performSearch(word, textArea, "derivitive");
 			}
 		});
-		button_1.setBounds(644, 7, 117, 29);
-		panel_2.add(button_1);
+		derivitiveSearchBtn.setBounds(644, 7, 117, 29);
+		derivitivePanel.add(derivitiveSearchBtn);
 
 		// Creates a help button used to help the user
 		JButton btnHelpMe = new JButton("Help Me!");
@@ -343,14 +213,14 @@ public class SearchGUI {
 		frame.getContentPane().add(btnHelpMe);
 
 		// Creates a clear button, clears results if clicked
-		JButton btnSearch = new JButton("Clear Results");
-		btnSearch.addActionListener(new ActionListener() {
+		JButton clearResultsBtn = new JButton("Clear Results");
+		clearResultsBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				textArea.setText("");
 			}
 		});
-		btnSearch.setBounds(659, 390, 117, 29);
-		frame.getContentPane().add(btnSearch);
+		clearResultsBtn.setBounds(659, 390, 117, 29);
+		frame.getContentPane().add(clearResultsBtn);
 
 		// Save button, saves the results to a txt file if clicked
 		JButton btnSaveSearch = new JButton("Save Results");
@@ -362,7 +232,61 @@ public class SearchGUI {
 		});
 		btnSaveSearch.setBounds(659, 425, 117, 29);
 		frame.getContentPane().add(btnSaveSearch);
+	}
 
+	/*
+	 * Perform various searches depending on the type passed
+	 * Removes repetitive code in the action listeners
+	 */
+	private void performSearch(Search word, JTextArea textArea, String type) {
+		ArrayList<String> animalText = new ArrayList<String>();
+		ArrayList<String> heredityText = new ArrayList<String>();
+		ArrayList<String> plantText = new ArrayList<String>();
+		ArrayList<String> cellText = new ArrayList<String>();
+		
+		// Search through each document
+		if (type.equals("derivitive")) {
+			animalText = word.derivitiveSearch(derivitiveSearchField.getText()
+					.toLowerCase(), animalDoc, checkBox.isSelected());
+			heredityText = word.derivitiveSearch(derivitiveSearchField.getText()
+					.toLowerCase(), heredityDoc, checkBox.isSelected());
+			plantText = word.derivitiveSearch(derivitiveSearchField.getText()
+					.toLowerCase(), plantsDoc, checkBox.isSelected());
+			cellText = word.derivitiveSearch(derivitiveSearchField.getText()
+					.toLowerCase(), cellDoc, checkBox.isSelected());
+		} else if (type.equals("exact")) {
+			derivitiveSearchField.setText(exactSearchTerm.getText());
+			animalText = word.exactSearch(exactSearchTerm.getText().toLowerCase(),
+					animalDoc, checkBox.isSelected());
+			heredityText = word.exactSearch(
+					exactSearchTerm.getText().toLowerCase(), heredityDoc,
+					checkBox.isSelected());
+			plantText = word.exactSearch(exactSearchTerm.getText().toLowerCase(),
+					plantsDoc, checkBox.isSelected());
+			cellText = word.exactSearch(exactSearchTerm.getText().toLowerCase(),
+					cellDoc, checkBox.isSelected());
+		} else if (type.equals("partial")) {
+			derivitiveSearchField.setText(partialSearchField.getText());
+			animalText = word.partialWordSearch(partialSearchField.getText()
+					.toLowerCase(), animalDoc, checkBox.isSelected());
+			heredityText = word.partialWordSearch(partialSearchField.getText()
+					.toLowerCase(), heredityDoc, checkBox.isSelected());
+			plantText = word.partialWordSearch(partialSearchField.getText()
+					.toLowerCase(), plantsDoc, checkBox.isSelected());
+			cellText = word.partialWordSearch(partialSearchField.getText()
+					.toLowerCase(), cellDoc, checkBox.isSelected());
+		}
+		// Write the results on the textArea
+		textArea.append(aText);
+		write(textArea, animalText, derivitiveSearchField.getText());
+		textArea.append(hText);
+		write(textArea, heredityText, derivitiveSearchField.getText());
+		textArea.append(pText);
+		write(textArea, plantText, derivitiveSearchField.getText());
+		textArea.append(cText);
+		write(textArea, cellText, derivitiveSearchField.getText());
+		write(textArea, new ArrayList<String>(), derivitiveSearchField.getText());
+		textArea.append(searchBarrier);
 	}
 
 	private void highlightWord(JTextArea textArea, String wordToHighlight) {
@@ -394,7 +318,7 @@ public class SearchGUI {
 	 * @param str
 	 */
 	private void write(JTextArea textArea, ArrayList<String> doc, String word) {
-		Search search = new Search(newSearch);
+		Search search = new Search();
 		textArea.setHighlighter(hilight);
 
 		String wordToHighlight = word.toLowerCase().trim();
