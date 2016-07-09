@@ -102,11 +102,6 @@ public class SearchGUI {
 		checkBox.setBounds(16, 92, 270, 23);
 		frame.getContentPane().add(checkBox);
 
-		// Only provide the sentence the word was found in
-		checkBox2 = new JCheckBox("Sentence Only");
-		checkBox2.setBounds(288, 92, 141, 23);
-		frame.getContentPane().add(checkBox2);
-
 		// First panel used for "exact terms"
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(211, 211, 211));
@@ -126,17 +121,13 @@ public class SearchGUI {
 				ArrayList<String> plantText = new ArrayList<String>();
 				ArrayList<String> cellText = new ArrayList<String>();
 				animalText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 				textArea.append(aText);
 				write(textArea, animalText, txtSearchTerms.getText());
 				textArea.append(hText);
@@ -167,17 +158,13 @@ public class SearchGUI {
 				ArrayList<String> plantText = new ArrayList<String>();
 				ArrayList<String> cellText = new ArrayList<String>();
 				animalText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.exactSearch(txtSearchTerms.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 				textArea.append(aText);
 				write(textArea, animalText, txtSearchTerms.getText());
 				textArea.append(hText);
@@ -211,17 +198,13 @@ public class SearchGUI {
 				ArrayList<String> plantText = new ArrayList<String>();
 				ArrayList<String> cellText = new ArrayList<String>();
 				animalText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 				textArea.append(aText);
 				write(textArea, animalText, textField.getText());
 				textArea.append(hText);
@@ -250,17 +233,13 @@ public class SearchGUI {
 				ArrayList<String> plantText = new ArrayList<String>();
 				ArrayList<String> cellText = new ArrayList<String>();
 				animalText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.partialWordSearch(textField.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 				textArea.append(aText);
 				write(textArea, animalText, textField.getText());
 				textArea.append(hText);
@@ -292,17 +271,13 @@ public class SearchGUI {
 				ArrayList<String> plantText = new ArrayList<String>();
 				ArrayList<String> cellText = new ArrayList<String>();
 				animalText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 				textArea.append(aText);
 				write(textArea, animalText, textField_1.getText());
 				textArea.append(hText);
@@ -331,17 +306,13 @@ public class SearchGUI {
 				ArrayList<String> cellText = new ArrayList<String>();
 				// Search through each document
 				animalText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), animalDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), animalDoc, checkBox.isSelected());
 				heredityText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), heredityDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), heredityDoc, checkBox.isSelected());
 				plantText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), plantsDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), plantsDoc, checkBox.isSelected());
 				cellText = word.derivitiveSearch(textField_1.getText()
-						.toLowerCase(), cellDoc, checkBox.isSelected(),
-						checkBox2.isSelected());
+						.toLowerCase(), cellDoc, checkBox.isSelected());
 
 				// Write the results on the textArea
 				textArea.append(aText);

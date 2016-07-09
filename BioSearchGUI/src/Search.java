@@ -46,7 +46,7 @@ public class Search {
 	 * @return
 	 */
 	public ArrayList<String> derivitiveSearch(String searchWord,
-			ArrayList<String> doc, boolean thesaurus, boolean sent) {
+			ArrayList<String> doc, boolean thesaurus) {
 		ArrayList<String> result = new ArrayList<String>();
 		int pos = 0;
 		String fullWord;
@@ -66,7 +66,7 @@ public class Search {
 				setSearchWord(fullWord);
 				// Gets the synonyms of this word
 				theSynonyms = getSynonym(fullWord).split(" ");
-				addSynonyms(theSynonyms, fullWord, doc, sent);
+				addSynonyms(theSynonyms, fullWord, doc);
 			}
 		}
 		// If the word isn't ignored, then keep searching
@@ -89,18 +89,11 @@ public class Search {
 										+ "Paragraph Number in text " + (i + 1)
 										+ " Word Number " + (j + 1));
 
-								if (!sent) {
-									result.add(doc.get(i));
-								} else {
-									pos = doc.get(i).indexOf(line[j]);
-									result.add(doc
-											.get(i)
-											.substring(
-													doc.get(i).lastIndexOf(".",
-															pos) + 1,
-													doc.get(i)
-															.indexOf(".", pos) + 1));
-								}
+								pos = doc.get(i).indexOf(line[j]);
+								result.add(doc.get(i).substring(
+										doc.get(i).lastIndexOf(".", pos) + 1,
+										doc.get(i).indexOf(".", pos) + 1));
+
 							}
 						}
 					}
@@ -125,11 +118,10 @@ public class Search {
 	 * 
 	 * @param searchWord
 	 * @param doc
-	 * @param sent
 	 * @return result
 	 */
 	public ArrayList<String> exactSearch(String searchWord,
-			ArrayList<String> doc, boolean thesaurus, boolean sentence) {
+			ArrayList<String> doc, boolean thesaurus) {
 		result = new ArrayList<String>();
 		int pos = 0;
 		String[] line;
@@ -142,7 +134,7 @@ public class Search {
 		}
 		// If the cross dictionary check box is selected, then do this
 		if (thesaurus && hasSynonym(searchWord)) {
-			addSynonyms(synonyms, searchWord, doc, sentence);
+			addSynonyms(synonyms, searchWord, doc);
 		}
 		if (isIgnored(ignore, searchWord)) {
 			result.add("This word is ignored in search results,"
@@ -241,7 +233,7 @@ public class Search {
 	 * @return
 	 */
 	public ArrayList<String> partialWordSearch(String searchWord,
-			ArrayList<String> doc, boolean thesaurus, boolean sent) {
+			ArrayList<String> doc, boolean thesaurus) {
 		result = new ArrayList<String>();
 		int pos = 0;
 		String fullWord;
@@ -261,7 +253,7 @@ public class Search {
 			if (fullWord != null) {
 				// Gets the synonyms of this word
 				theSynonyms = getSynonym(fullWord).split(" ");
-				addSynonyms(theSynonyms, fullWord, doc, sent);
+				addSynonyms(theSynonyms, fullWord, doc);
 			}
 		}
 		// If the word isn't ignored, then keep searching
@@ -283,18 +275,12 @@ public class Search {
 										+ line[j] + "\n\n"
 										+ "Paragraph Number in text " + (i + 1)
 										+ " Word Number " + (j + 1));
-								if (!sent) {
-									result.add(doc.get(i));
-								} else {
-									pos = doc.get(i).indexOf(line[j]);
-									result.add(doc
-											.get(i)
-											.substring(
-													doc.get(i).lastIndexOf(".",
-															pos) + 1,
-													doc.get(i)
-															.indexOf(".", pos) + 1));
-								}
+
+								pos = doc.get(i).indexOf(line[j]);
+								result.add(doc.get(i).substring(
+										doc.get(i).lastIndexOf(".", pos) + 1,
+										doc.get(i).indexOf(".", pos) + 1));
+
 							}
 						}
 					}
@@ -316,7 +302,7 @@ public class Search {
 
 	/**************************** Private Methods *******************************/
 	private void addSynonyms(String[] synonyms, String searchWord,
-			ArrayList<String> doc, boolean sentence) {
+			ArrayList<String> doc) {
 		// The value returned from getSynonym is a long string
 		// So this variable splits the words up in the string
 		try {
@@ -326,9 +312,9 @@ public class Search {
 				// If the word isn't null then search it
 				if (synonyms[i] != null) {
 					for (int index = 0; index < exactSearchSynonym(synonyms[i],
-							doc, sentence).size(); index++) {
-						result.add(exactSearchSynonym(synonyms[i], doc,
-								sentence).get(index));
+							doc).size(); index++) {
+						result.add(exactSearchSynonym(synonyms[i], doc).get(
+								index));
 					}
 				}
 			}
@@ -372,7 +358,7 @@ public class Search {
 	 * @param doc
 	 */
 	private ArrayList<String> exactSearchSynonym(String searchWord,
-			ArrayList<String> doc, boolean sent) {
+			ArrayList<String> doc) {
 
 		result = new ArrayList<String>();
 		setSearchWord(searchWord);
